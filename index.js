@@ -3,26 +3,52 @@ const jwt = require('jsonwebtoken');
 const app = express();
 
 
-app.get('/holi', (res, req) => {
-    res.json({
-        text: 'api works!'
-    });
+app.get('/', (req, res) => {
+    res.send("HOLA MUNDO");
 });
 
+const user = [
+    {
+        userName: "santi", 
+
+    }
+]
+
 app.post('/login', (req, res) => {
-    const user = {id: 3};
-    const token = jwt.sign({user},'myToken');
+    // const user = {id: 3};
+    const token = jwt.sign({user},'my_secret_token');
     res.json({
         token
     });
 });
 
-app.get('/api/protected', (res, req) => {
-    res.json({
+
+app.get('/api/protected', ensureToken,  (req, res) => {
+    res.json({ 
         text: 'protected'
-    })
+    });
 });
 
-app.listen(3000, () =>{
+
+function ensureToken(req, res, next){
+    const bearerHeadder = req.header['authorization'];
+    console.log(bearerHeadder);
+        if(typeof bearerHeadder !== 'undefined'){
+            const bearer = bearerHeadder.split(" ");
+            const bearerToken = bearer[1];
+            req.token = bearerToken;
+            next(); 
+        } else {
+            res.sendStatus(403);  
+        }
+    next();
+}
+
+
+app.listen(3000, () => {
     console.log('server on port 3000');
 });
+
+// {
+//     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJ1c2VyTmFtZSI6InNhbnRpIn1dLCJpYXQiOjE1OTMyOTk4NzR9.iYRKq83vP1S6RlrblVY9j7UjwFpwJDPEFJofhQKlXz8"
+// }
