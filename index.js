@@ -23,7 +23,7 @@ app.post('/login', (req, res) => {
 });
 
 
-app.get('/api/protected', ensureToken,  (req, res) => {
+app.get('/protected', ensureToken,  (req, res) => {
     res.json({ 
         text: 'protected'
     });
