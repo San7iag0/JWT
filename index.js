@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
 const user = [
     {
         userName: "santi", 
+        password: 1234
 
     }
 ]
