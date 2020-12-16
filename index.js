@@ -33,7 +33,6 @@ app.get('/protected', ensureToken,  (req, res) => {
 
 function ensureToken(req, res, next){
     const bearerHeadder = req.header['authorization'];
-    console.log(bearerHeadder);
         if(typeof bearerHeadder !== 'undefined'){
             const bearer = bearerHeadder.split(" ");
             const bearerToken = bearer[1];
